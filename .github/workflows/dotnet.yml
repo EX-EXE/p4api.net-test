@@ -1,0 +1,38 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    
+    env:
+      P4D_PATH: ./p4d
+      P4D_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4d
+
+    steps:
+    - name: Cache p4d
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.P4D_PATH }}
+        key: ${{ env.P4D_URL }}
+        
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
