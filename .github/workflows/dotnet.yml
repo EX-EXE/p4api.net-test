@@ -16,6 +16,8 @@ jobs:
       P4D_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4d
 
     steps:
+    - uses: actions/checkout@v4
+    
     - name: Make p4root
       run: |
         if [ ! -d $P4_ROOT ]; then
@@ -33,7 +35,6 @@ jobs:
         wget -O $P4_ROOT/$P4D_NAME $P4D_URL
         chmod +x $P4_ROOT/$P4D
 
-    - uses: actions/checkout@v4
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
