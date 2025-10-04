@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Make p4root
       run: |
         if [ ! -d $P4_ROOT ]; then
@@ -28,13 +28,14 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ${{ env.P4_ROOT}}/${{ env.P4D_NAME }}
-        key: test
+        key: ${{ env.P4D_URL}}
         
     - name: Download p4d
       run: |
-        wget -O $P4_ROOT/$P4D_NAME $P4D_URL
-        chmod +x $P4_ROOT/$P4D
-
+        if [ ! -f $P4_ROOT/$P4D_NAME ]; then
+          wget -O $P4_ROOT/$P4D_NAME $P4D_URL
+        fi
+        chmod +x $P4_ROOT/$P4D_NAME
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
