@@ -26,7 +26,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ${{ env.P4_ROOT}}/${{ env.P4D_NAME }}
-        key: ${{ env.P4D_URL }}
+        key: test
         
     - name: Download p4d
       run: |
