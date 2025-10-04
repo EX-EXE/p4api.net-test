@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-24.04
     
     env:
-      P4_ROOT: ./p4root/
+      P4_ROOT: ./p4root
       P4D_NAME: p4d
       P4D_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4d
 
     steps:
     - name: Make p4root
       run: |
-        if [ ! -d $P4D_ROOT ]; then
-          mkdir -p $P4D_ROOT
+        if [ ! -d $P4_ROOT ]; then
+          mkdir -p $P4_ROOT
         fi
 
     - name: Cache p4d
