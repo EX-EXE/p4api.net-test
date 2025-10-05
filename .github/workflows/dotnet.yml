@@ -18,6 +18,10 @@ jobs:
       P4D_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4d
       P4SSLDIR: ./p4ssl
 
+      P4_PORT: ssl:localhost:1666
+      P4_USER: admin
+      P4_PASS: password
+
     steps:
     - uses: actions/checkout@v4
 
@@ -63,7 +67,24 @@ jobs:
     - name: Launch p4d
       run: |
         $P4_ROOT/$P4D_NAME -xi -r $P4_ROOT
+        $P4_ROOT/$P4D_NAME -r $P4_ROOT -d
+        sleep 2
         
+    - name: Create Perforce admin user
+      run: |
+          $P4_ROOT/$P4_NAME -p $P4_PORT trust -f
+          $P4_ROOT/$P4_NAME -p $P4_PORT user -f $P4_USER <<EOF
+          User: $P4_USER
+          Email: ${P4_USER}@example.com
+          FullName: Perforce Admin
+          EOF
+
+          echo "$P4_PASS" | $P4_ROOT/$P4_NAME -p $P4_PORT passwd $P4_USER
+          $P4_ROOT/$P4_NAME -p $P4_PORT group admin <<EOF
+          Group: admin
+          Users:
+              $P4_USER
+          EOF
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
