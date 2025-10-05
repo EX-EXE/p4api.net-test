@@ -72,19 +72,19 @@ jobs:
         
     - name: Create Perforce admin user
       run: |
-          $P4_ROOT/$P4_NAME -p $P4_PORT trust -f -y
-          $P4_ROOT/$P4_NAME -p $P4_PORT user -f $P4_USER <<EOF
-          User: $P4_USER
-          Email: ${P4_USER}@example.com
-          FullName: Perforce Admin
-          EOF
+        $P4_ROOT/$P4_NAME -p $P4_PORT trust -f -y
+        $P4_ROOT/$P4_NAME -p $P4_PORT user -f $P4_USER <<EOF
+        User: $P4_USER
+        Email: ${P4_USER}@example.com
+        FullName: Perforce Admin
+        EOF
 
-          echo "$P4_PASS" | $P4_ROOT/$P4_NAME -p $P4_PORT passwd $P4_USER
-          $P4_ROOT/$P4_NAME -p $P4_PORT group admin <<EOF
-          Group: admin
-          Users:
-              $P4_USER
-          EOF
+        $P4_ROOT/$P4_NAME -p $P4_PORT passwd $P4_USER -P $P4_PASS
+        $P4_ROOT/$P4_NAME -p $P4_PORT group admin <<EOF
+        Group: admin
+        Users:
+            $P4_USER
+        EOF
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
