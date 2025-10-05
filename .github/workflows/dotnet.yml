@@ -19,10 +19,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Make p4root
+    - name: Make p4 directories
       run: |
         if [ ! -d $P4_ROOT ]; then
           mkdir -p $P4_ROOT
+        fi
+        if [ ! -d $P4SSLDIR ]; then
+          mkdir -p $P4SSLDIR
         fi
 
     - name: Cache p4d
