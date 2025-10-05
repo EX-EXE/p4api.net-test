@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     
     env:
-      P4_ROOT: ${{ github.workspace }}/p4root
+      P4_ROOT: ./p4root
       P4_NAME: p4
       P4_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4
       P4D_NAME: p4d
@@ -79,7 +79,7 @@ jobs:
         FullName: Perforce Admin
         EOF
 
-        $P4_ROOT/$P4_NAME -p $P4_PORT passwd $P4_USER -P $P4_PASS
+        echo "$P4_PASS\n$P4_PASS\n" | $P4_ROOT/$P4_NAME -p $P4_PORT passwd $P4_USER
         $P4_ROOT/$P4_NAME -p $P4_PORT group admin <<EOF
         Group: admin
         Users:
