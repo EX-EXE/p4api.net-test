@@ -72,7 +72,7 @@ jobs:
         
     - name: Create Perforce admin user
       run: |
-          $P4_ROOT/$P4_NAME -p $P4_PORT trust -f
+          $P4_ROOT/$P4_NAME -p $P4_PORT trust -f -y
           $P4_ROOT/$P4_NAME -p $P4_PORT user -f $P4_USER <<EOF
           User: $P4_USER
           Email: ${P4_USER}@example.com
