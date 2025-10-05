@@ -9,7 +9,7 @@ public class ConnectionTest(ITestOutputHelper testOutputHelper)
     [Fact]
     public void GetActiveTicket()
     {
-        var repository = CreateAndConnectByEnvironment();
+        using var repository = CreateAndConnectByEnvironment();
         var activeTicket = repository.Connection.GetActiveTicket();
         Assert.NotNull(activeTicket);
         GetLogger().LogInformation($"ActiveTicket : {activeTicket}");
