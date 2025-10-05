@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace P4ApiDotNetTests;
 
-internal static class FileGenerator
+internal static class FileUtility
 {
     public static void GenerateRandomBinaryFile(string path, long size)
     {
@@ -37,5 +37,18 @@ internal static class FileGenerator
         {
             ArrayPool<byte>.Shared.Return(bufferData);
         }
+    }
+
+    public static string ComputeMd5Hash(string path)
+    {
+        if (!System.IO.File.Exists(path))
+        {
+            throw new FileNotFoundException(path);
+        }
+
+        using var md5 = MD5.Create();
+        using var stream = File.OpenRead(path);
+        var hash = md5.ComputeHash(stream);
+        return Convert.ToHexString(hash);
     }
 }
