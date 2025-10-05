@@ -73,6 +73,19 @@ public class ReadStreamDepotTest
             Assert.Contains(hash, submitFileHashes);
         }
     }
+    [Fact]
+    public void GetFileContentsParallel()
+    {
+        Parallel.ForEach(submitFiles, (submitFile) =>
+        {
+            using var repository = CreateAndConnectByEnvironment();
+            var temp = System.IO.Path.GetTempFileName();
+            var fileContent = repository.GetFileContents(new GetFileContentsCmdOptions(GetFileContentsCmdFlags.None, temp), submitFile.File);
+            var hash = FileUtility.ComputeMd5Hash(temp);
+            Assert.Contains(hash, submitFileHashes);
+        });
+    }
+
     //[Fact]
     //public void GetFileContentsParallel()
     //{
