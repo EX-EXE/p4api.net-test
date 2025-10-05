@@ -14,6 +14,7 @@ jobs:
       P4_ROOT: ./p4root
       P4D_NAME: p4d
       P4D_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4d
+      P4SSLDIR: ./p4ssl
 
     steps:
     - uses: actions/checkout@v4
@@ -36,6 +37,16 @@ jobs:
           wget -O $P4_ROOT/$P4D_NAME $P4D_URL
         fi
         chmod +x $P4_ROOT/$P4D_NAME
+
+    - name: Generate SSL certs
+      run: |
+        $P4_ROOT/$P4D_NAME -Gc
+        $P4_ROOT/$P4D_NAME -Gf
+
+    - name: Launch p4d
+      run: |
+        $P4_ROOT/$P4D_NAME -xi -r $P4_ROOT
+        
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
