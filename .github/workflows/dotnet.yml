@@ -26,6 +26,7 @@ jobs:
         fi
         if [ ! -d $P4SSLDIR ]; then
           mkdir -p $P4SSLDIR
+          chmod 700 $P4SSLDIR
         fi
 
     - name: Cache p4d
