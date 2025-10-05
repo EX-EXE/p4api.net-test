@@ -79,12 +79,11 @@ jobs:
         FullName: Perforce Admin
         EOF
 
-        #echo "$P4_PASS\n$P4_PASS\n" | $P4_ROOT/$P4_NAME -p $P4_PORT passwd $P4_USER
         $P4_ROOT/$P4_NAME -p $P4_PORT -u $P4_USER passwd -O "" -P $P4_PASS
-        $P4_ROOT/$P4_NAME -p $P4_PORT group admin <<EOF
-        Group: admin
-        Users:
-            $P4_USER
+
+        $P4_ROOT/$P4_NAME -p $P4_PORT protect -i <<EOF
+        Protections:
+            super user admin * //...
         EOF
     
     - name: Setup .NET
