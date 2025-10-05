@@ -67,7 +67,7 @@ jobs:
     - name: Launch p4d
       run: |
         $P4_ROOT/$P4D_NAME -xi -r $P4_ROOT
-        $P4_ROOT/$P4D_NAME -r $P4_ROOT -d
+        $P4_ROOT/$P4D_NAME -r $P4_ROOT -p $P4_PORT -d
         sleep 2
         
     - name: Create Perforce admin user
