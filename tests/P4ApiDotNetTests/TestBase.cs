@@ -31,10 +31,17 @@ public class TestBase
         var repository = new Perforce.P4.Repository(serverData);
         var connection = repository.Connection;
 
-        var connectResult = connection.TrustAndConnect(new TrustCmdOptions(TrustCmdFlags.AutoAccept | TrustCmdFlags.ForceReplacement), "", "");
+        var connectResult = connection.TrustAndConnect(new TrustCmdOptions(TrustCmdFlags.AutoAccept | TrustCmdFlags.ForceReplacement), null, null);
         if (!connectResult)
         {
-            throw new InvalidOperationException($"Failed trust and connect.");
+            throw new InvalidOperationException($"Failed connect.");
+        }
+
+        connection.UserName = user;
+        var loginResult = connection.Login(password, false);
+        if (loginResult == null || string.IsNullOrEmpty(loginResult.Ticket))
+        {
+            throw new InvalidOperationException($"Failed login.");
         }
         return repository;
     }
@@ -53,6 +60,7 @@ public class TestBase
         var p4Port = GetEnvironmentVariable("P4_PORT");
         var p4User = GetEnvironmentVariable("P4_USER");
         var p4Pass = GetEnvironmentVariable("P4_PASS");
+        GetLogger().LogInformation($"Environment. P4PORT:{p4Port} P4USER:{p4User}");
         return CreateAndConnect(p4Port, p4User, p4Pass);
     }
 }
