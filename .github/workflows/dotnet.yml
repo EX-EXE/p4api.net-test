@@ -12,6 +12,8 @@ jobs:
     
     env:
       P4_ROOT: ./p4root
+      P4_NAME: p4
+      P4_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4
       P4D_NAME: p4d
       P4D_URL: https://ftp.perforce.com/perforce/r25.1/bin.linux26x86_64/p4d
       P4SSLDIR: ./p4ssl
@@ -29,12 +31,23 @@ jobs:
           chmod 700 $P4SSLDIR
         fi
 
+    - name: Cache p4
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.P4_ROOT}}/${{ env.P4_NAME }}
+        key: ${{ env.P4_URL}}
+    - name: Download p4
+      run: |
+        if [ ! -f $P4_ROOT/$P4_NAME ]; then
+          wget -O $P4_ROOT/$P4_NAME $P4_URL
+        fi
+        chmod +x $P4_ROOT/$P4_NAME
+
     - name: Cache p4d
       uses: actions/cache@v3
       with:
         path: ${{ env.P4_ROOT}}/${{ env.P4D_NAME }}
         key: ${{ env.P4D_URL}}
-        
     - name: Download p4d
       run: |
         if [ ! -f $P4_ROOT/$P4D_NAME ]; then
